@@ -128,20 +128,20 @@ public partial class PreviewCameraPlugin : EditorPlugin {
             break;
 
           case Key.F5:
-            GD.Print(string.Format("Setting to {0} mode", _isLandscapeMode ? "Landscape" : "Portrait"));
-            willProcessResize = true;
             _isLandscapeMode = !_isLandscapeMode;
+            GD.Print(string.Format("Setting to {0} mode", _isLandscapeMode ? "Landscape" : "Portrait"));
+            willProcessResize = true;            
             break;
 
           case Key.KpAdd:
-            GD.Print("Increasing window size");
             _windowSizeMultiplier = Mathf.Min(3.0f, _windowSizeMultiplier + 0.1f);
+            GD.Print("Increasing window size");            
             willProcessResize = true;
             break;
 
           case Key.KpSubtract:
-            GD.Print("Decreasing window size");
             _windowSizeMultiplier = Mathf.Max(0.5f, _windowSizeMultiplier - 0.1f);
+            GD.Print("Decreasing window size");            
             willProcessResize = true;
             break;
         }
