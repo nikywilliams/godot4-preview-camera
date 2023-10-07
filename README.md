@@ -11,7 +11,7 @@ F2 - Set to 4x3 aspect
 F3 - Set to 21x9 aspect
 F5 - Toggle between Landscape and Portrait
 + on Keypad - Increase size of window
-- on Keypad - Decrease size of window
++ - on Keypad - Decrease size of window
 
 Unzip/clone this to your addons folder, there are just 2 files in this plugin:
   plugin.cfg
