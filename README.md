@@ -1,6 +1,6 @@
 # godot4-preview-camera
 Had a difficult time finding a plugin to display a separate preview of the active camera in my 3D scene.
-Didn't really like splitting the viewport as that seemd to be overkill for just needing a small preview.
+Didn't really like splitting the viewport as that seemed to be overkill for just needing a small preview.
 Saw a few other scripts out there but they seemed to be mainly for Godot 3.x and 4.0.x so there were some issues with getting them to work with Godot 4.1.1 which is what I'm currently using.
 
 Not sure if this will work on other versions of Godot and have only tested this in a Windows environment.
