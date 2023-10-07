@@ -16,3 +16,7 @@ Once you enable the plugin, a small window will pop up with a display from the a
 Unzip/clone this to your addons folder, there are just 2 files in this plugin:
 - plugin.cfg
 - PreviewCameraPlugin.cs
+
+
+https://github.com/nikywilliams/godot4-preview-camera/assets/28369028/0a99d69f-6275-4061-9ea4-fa0f6a05ce09
+
