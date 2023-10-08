@@ -7,7 +7,9 @@ public partial class PreviewCameraPlugin : EditorPlugin {
   // Private vars  
   private Window _window;
   private Camera3D _activeCamera;
-  private Camera3D _previewCamera;  
+  /////private Camera2D _activeCameraUI;
+  private Camera3D _previewCamera;
+  /////private Camera2D _previewCameraUI;
   private Vector2I _windowSize16x9;
   private Vector2I _windowSize4x3;
   private Vector2I _windowSize21x9;
@@ -20,6 +22,7 @@ public partial class PreviewCameraPlugin : EditorPlugin {
   /// 
   /// </summary>
   public override void _EnterTree() {
+    GD.Print("_EnterTree");    
     // Create window
     CreateWindow();
 
@@ -30,7 +33,7 @@ public partial class PreviewCameraPlugin : EditorPlugin {
     _currentWindowSize = _windowSize16x9;
     _currentWindowPosition = Vector2I.Zero;
     _isLandscapeMode = true;
-    _windowSizeMultiplier = 1.0f;
+    _windowSizeMultiplier = 1.0f;    
     
     // Need to know when the scene changes to re-create the window
     SceneChanged += OnSceneChanged;
@@ -52,8 +55,11 @@ public partial class PreviewCameraPlugin : EditorPlugin {
     };
 
     // Attempt to see if there is an active camera
-    _activeCamera = GetEditorInterface().GetEditedSceneRoot().GetViewport().GetCamera3D();
-    if (_activeCamera == null) {
+    _activeCamera = GetEditorInterface()?.GetEditedSceneRoot()?.GetViewport()?.GetCamera3D();
+    /////_activeCameraUI = GetEditorInterface()?.GetEditedSceneRoot()?.GetViewport()?.GetCamera2D() ;
+    _previewCamera = null;
+    /////_previewCameraUI = null;
+    if (_activeCamera == null /*&& _activeCameraUI == null*/) {
       // Alert user that there is currently no active cameras
       string message = "No active cameras could be found";
       GD.PrintErr(message);
@@ -66,7 +72,12 @@ public partial class PreviewCameraPlugin : EditorPlugin {
       _previewCamera = new Camera3D();
       _window.AddChild(_previewCamera);
       _previewCamera.Owner = _window;
-      _window.WindowInput += OnInput;      
+
+      /////_previewCameraUI = new Camera2D();
+      /////_window.AddChild(_previewCameraUI);
+      /////_previewCameraUI.Owner = _window;
+
+      _window.WindowInput += OnInput;
     }
 
     // Finally attach the window as a child
@@ -79,10 +90,18 @@ public partial class PreviewCameraPlugin : EditorPlugin {
   /// <param name="node"></param>
   public void OnSceneChanged(Node node) {
     // Clean up and recreate the window
+    if (_window != null) {
+      _currentWindowPosition = _window.Position;
+    }
     _ExitTree();
-    _currentWindowPosition = _window.Position;
-    CreateWindow();
-    _window.Position = _currentWindowPosition;
+    if (node != null) {
+      GD.Print("OnSceneChanged");
+      CreateWindow();
+      _window.Position = _currentWindowPosition;
+    }
+    else {
+      GD.Print("This is a new scene. After saving this new scene, close and reopen this scene to initialize Camera Preview plugin.");
+    }
   }
 
   /// <summary>
@@ -95,10 +114,13 @@ public partial class PreviewCameraPlugin : EditorPlugin {
       _previewCamera.GlobalPosition = _activeCamera.GlobalPosition;
       _previewCamera.GlobalRotation = _activeCamera.GlobalRotation;
     }
+
+    /////if (_activeCameraUI != null && _previewCameraUI != null) {
+    // Sync the preview camera's pos/rot with the active camera
+    /////_previewCameraUI.GlobalPosition = _activeCameraUI.GlobalPosition;
+    /////_previewCameraUI.GlobalRotation = _activeCameraUI.GlobalRotation;      
+    /////}
   }
-
-  
-
 
   /// <summary>
   /// 
@@ -161,10 +183,14 @@ public partial class PreviewCameraPlugin : EditorPlugin {
   /// <summary>
   /// 
   /// </summary>
-  public override void _ExitTree() {   
+  public override void _ExitTree() {    
     if (_window != null) {
       // General cleanup
+      GD.Print("_ExitTree");
       _window.QueueFree();
+      _window = null;
+      _activeCamera = null;
+      /////_activeCameraUI = null;
     }
   }
 }
