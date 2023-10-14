@@ -98,6 +98,7 @@ public partial class PreviewCameraPlugin : EditorPlugin {
       GD.Print("OnSceneChanged");
       CreateWindow();
       _window.Position = _currentWindowPosition;
+      ResizeWindow();
     }
     else {
       GD.Print("This is a new scene. After saving this new scene, close and reopen this scene to initialize Camera Preview plugin.");
@@ -169,12 +170,7 @@ public partial class PreviewCameraPlugin : EditorPlugin {
         }
 
         if (willProcessResize) {
-          // Only want to calculate a resize on specific inputs
-          Vector2I newScreenSize = new Vector2I() {
-            X = Mathf.RoundToInt((_isLandscapeMode ? _currentWindowSize.X : _currentWindowSize.Y) * _windowSizeMultiplier),
-            Y = Mathf.RoundToInt((_isLandscapeMode ? _currentWindowSize.Y : _currentWindowSize.X) * _windowSizeMultiplier)
-          };
-          _window.Size = newScreenSize;          
+          ResizeWindow();
         }
       }
     }
@@ -183,10 +179,22 @@ public partial class PreviewCameraPlugin : EditorPlugin {
   /// <summary>
   /// 
   /// </summary>
+  private void ResizeWindow() {
+    // Only want to calculate a resize on specific inputs
+    Vector2I newScreenSize = new Vector2I() {
+      X = Mathf.RoundToInt((_isLandscapeMode ? _currentWindowSize.X : _currentWindowSize.Y) * _windowSizeMultiplier),
+      Y = Mathf.RoundToInt((_isLandscapeMode ? _currentWindowSize.Y : _currentWindowSize.X) * _windowSizeMultiplier)
+    };
+    _window.Size = newScreenSize;
+  }
+
+  /// <summary>
+  /// 
+  /// </summary>
   public override void _ExitTree() {    
     if (_window != null) {
       // General cleanup
-      GD.Print("_ExitTree");
+      //GD.Print("_ExitTree");
       _window.QueueFree();
       _window = null;
       _activeCamera = null;
