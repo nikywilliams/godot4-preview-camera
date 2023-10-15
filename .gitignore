@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/godot4-preview-camera.wsp
+/.vs/godot4-preview-camera/FileContentIndex
+/.vs
